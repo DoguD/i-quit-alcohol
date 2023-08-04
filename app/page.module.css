@@ -233,8 +233,18 @@
 .titleRow{
     display: flex;
     flex-direction: row;
+    align-items: center;
     padding: 0;
     margin: 0 0 16px;
+}
+
+.centeredRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
 }
 
 .title {
@@ -258,13 +268,24 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0 3px 8px;
 }
 
+.bigEmoji {
+    font-size: 32px;
+}
+
 .button {
     font-size: 32px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 16px;
+    padding-bottom: 16px;
     width: 120px;
 }
 
+.buttonNormalText {
+    font-size: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 .input {
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: bold;
 }
