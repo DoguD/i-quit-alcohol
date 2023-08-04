@@ -1,95 +1,75 @@
-import Image from 'next/image'
+'use client';
 import styles from './page.module.css'
+import '@fontsource/inter';
+import {Button, Input, Select} from "@mui/joy";
+import Option from '@mui/joy/Option';
+import {useState} from "react";
 
 export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    const [days, setDays] = useState();
+    const [drink, setDrink] = useState();
+    const [type, setType] = useState("beer");
+    const [cost, setCost] = useState();
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+    const handleChangeType = (event, newValue) => {
+        setType(newValue);
+    };
 
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
+    const handleChangeDays = (event) => {
+        setDays(event.target.value);
+    }
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
+    const handleChangeDrink = (event) => {
+        setDrink(event.target.value);
+    }
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
+    const handleChangeCost = (event) => {
+        setCost(event.target.value);
+    }
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+    const saveData = () => {
+        alert(days + " " + drink + " " + type + " " + cost);
+    }
+
+    return (
+        <main className={styles.main}>
+            <div className={styles.titleRow}>
+                <p className={styles.title}>I quit alcohol</p>
+                <Input className={styles.input} color="primary" variant="soft" size={"sm"}
+                       style={{marginLeft: 8, marginRight: 8, width: 60}}
+                       onChange={handleChangeDays}/>
+                <p className={styles.title}>days ago.</p>
+            </div>
+
+            <div className={styles.titleRow}>
+                <p className={styles.title}>I was mostly drinking</p>
+                <Select defaultValue="beer" style={{marginRight: 8, marginLeft: 8}} onChange={handleChangeType}>
+                    <Option value="beer">🍺 Beer</Option>
+                    <Option value="wine">🍷 Wine</Option>
+                    <Option value="liquor">🥃 Liquor</Option>
+                    <Option value="cocktail">🍸 Cocktails</Option>
+                </Select>
+                <p className={styles.title}>.</p>
+            </div>
+
+            <div className={styles.titleRow} style={{marginBottom: 32}}>
+                <p className={styles.title}>On average consuming</p>
+                <Input className={styles.input} color="primary" variant="soft" size={"sm"}
+                       style={{marginLeft: 8, marginRight: 8, width: 60}}
+                       onChange={handleChangeDrink}/>
+                <p className={styles.title}> drinks and spending $</p>
+                <Input className={styles.input} color="primary" variant="soft" size={"sm"}
+                       style={{marginLeft: 0, marginRight: 8, width: 120}}
+                       onChange={handleChangeCost}/>
+                <p className={styles.title}>per week.</p>
+            </div>
+
+            <Button className={styles.button} color={"primary"} onClick={saveData} disabled={isNaN(days) || isNaN(drink) || isNaN(cost)}>🤘</Button>
+
+
+            <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
+                                                                target={"_blank"}
+                                                                rel={"noopener"}>Dogu</a></p>
+        </main>
+    )
 }
