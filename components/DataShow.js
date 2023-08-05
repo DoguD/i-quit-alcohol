@@ -56,7 +56,7 @@ export default function DataShow(props) {
     return (
         <div>
             <div className={styles.titleRow}>
-                <p className={styles.title}>Congrats! You quit drinking {days} ago. 🤘</p>
+                <p className={styles.title}>Congrats! You quit drinking {days} days ago. 🤘</p>
             </div>
             <div className={styles.titleRow}>
                 <p className={styles.title}>By not drinking {drinkCount} {drinkToEmoji[type]}, you saved
