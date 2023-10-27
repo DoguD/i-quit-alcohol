@@ -51,7 +51,7 @@ export default function Home() {
     return (
         <main className={styles.main}>
             {showData === -1 ? <div/> :
-                showData === 1 ? <DataShow reload={() => setShowData(0)}/> :
+                showData === 1 ? <DataShow reload={() => setShowData(0)} uid={uid}/> :
                     <DataInput reload={() => setShowData(1)}/>
             }
             <div className={styles.centeredRow} style={{marginTop: 16}}>
