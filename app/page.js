@@ -8,7 +8,7 @@ import {useCookies} from "react-cookie";
 
 import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
-import {getData} from "@/components/Firebase/FireStore";
+import {addData, getData} from "@/components/Firebase/FireStore";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
@@ -42,6 +42,7 @@ export default function Home() {
     }, [])
 
     useEffect(() => {
+        // If there is a logged user try to get data from server
         if (uid !== "") {
             getDataOfUser(uid);
         }
@@ -50,6 +51,7 @@ export default function Home() {
     async function getDataOfUser(uid) {
         let {result, error} = await getData("user_sober_data", uid);
 
+        // If there is no data in the server, put it to cookie
         if (result._document != null) {
             let data = result._document.data.value.mapValue.fields;
             let days = data.days.stringValue;
@@ -63,6 +65,15 @@ export default function Home() {
             setCookie('cost', cost, {path: '/'});
 
             setShowData(1);
+        }
+        // If no data in the server but in cookies put cookie data to server
+        else if (typeof cookies.days !== "undefined") {
+            await addData("user_sober_data", uid, {
+                days: cookies.days,
+                drinkCount: cookies.drink,
+                cost: cookies.cost,
+                type: cookies.type
+            });
         }
     }
 
