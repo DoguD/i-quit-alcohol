@@ -86,7 +86,7 @@ export default function Home() {
             <div className={styles.centeredRow + " " + styles.signInRow} style={{marginTop: 16}}>
                 <p className={styles.signInExplanationText}>
                     {uid === "" ? "You can save your data and sync across devices by signing in."
-                        : "You are signed in."}</p>
+                        : ""}</p>
                 {uid === "" ?
                     <div style={{cursor: 'pointer'}} onClick={() => signInWithGoogle()}>
                         <img src={'/google/web_light_rd_SI@4x.png'} alt={"Google Sign-In Button"} width={160}/>
