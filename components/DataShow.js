@@ -1,7 +1,7 @@
 import {useCookies} from "react-cookie";
 import {useEffect, useState} from "react";
 import styles from "@/app/page.module.css";
-import {Button, Input} from "@mui/joy";
+import {Button} from "@mui/joy";
 
 const drinkToEmoji = {
     "beer": "🍺",
