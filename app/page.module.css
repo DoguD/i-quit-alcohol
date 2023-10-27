@@ -321,4 +321,13 @@
         justify-content: center;
         flex-wrap: wrap;
     }
+
+    .signInRow {
+        flex-direction: column;
+    }
+
+    .signInExplanationText {
+        margin-bottom: 4px;
+        text-align: center;
+    }
 }

@@ -82,7 +82,8 @@ export default function Home() {
                 showData === 1 ? <DataShow reload={() => setShowData(0)} uid={uid}/> :
                     <DataInput reload={() => setShowData(1)} uid={uid}/>
             }
-            <div className={styles.centeredRow} style={{marginTop: 16}}>
+
+            <div className={styles.centeredRow + " " + styles.signInRow} style={{marginTop: 16}}>
                 <p className={styles.signInExplanationText}>
                     {uid === "" ? "You can save your data and sync across devices by signing in."
                         : "You are signed in."}</p>
