@@ -6,7 +6,7 @@ import {useEffect, useState} from "react";
 import DataShow from "@/components/DataShow";
 import {useCookies} from "react-cookie";
 
-import {auth, signInWithGoogle} from "@/components/Firebase";
+import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 
 export default function Home() {

@@ -27,4 +27,4 @@ export function signInWithGoogle() {
     signInWithRedirect(auth, provider);
 }
 
-export {auth};
+export {auth, app};
