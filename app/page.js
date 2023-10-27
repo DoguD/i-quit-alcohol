@@ -8,6 +8,7 @@ import {useCookies} from "react-cookie";
 
 import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
+import {getData} from "@/components/Firebase/FireStore";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
@@ -39,6 +40,31 @@ export default function Home() {
         });
 
     }, [])
+
+    useEffect(() => {
+        if (uid !== "") {
+            getDataOfUser(uid);
+        }
+    }, [uid])
+
+    async function getDataOfUser(uid) {
+        let {result, error} = await getData("user_sober_data", uid);
+
+        if (result._document != null) {
+            let data = result._document.data.value.mapValue.fields;
+            let days = data.days.stringValue;
+            let drink = data.drinkCount.stringValue;
+            let cost = data.cost.stringValue;
+            let type = data.type.stringValue;
+
+            setCookie('days', days, {path: '/'});
+            setCookie('drink', drink, {path: '/'});
+            setCookie('type', type, {path: '/'});
+            setCookie('cost', cost, {path: '/'});
+
+            setShowData(1);
+        }
+    }
 
     function signOutClient() {
         signOut(auth).then(() => {
