@@ -52,7 +52,7 @@ export default function Home() {
         <main className={styles.main}>
             {showData === -1 ? <div/> :
                 showData === 1 ? <DataShow reload={() => setShowData(0)} uid={uid}/> :
-                    <DataInput reload={() => setShowData(1)}/>
+                    <DataInput reload={() => setShowData(1)} uid={uid}/>
             }
             <div className={styles.centeredRow} style={{marginTop: 16}}>
                 <p className={styles.signInExplanationText}>

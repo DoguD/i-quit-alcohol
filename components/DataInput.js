@@ -3,6 +3,7 @@ import styles from "@/app/page.module.css";
 import {Button, Input, Select} from "@mui/joy";
 import Option from "@mui/joy/Option";
 import {useCookies} from "react-cookie";
+import {addData} from "@/components/Firebase/FireStore";
 
 export default function DataInput(props) {
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -28,12 +29,22 @@ export default function DataInput(props) {
         setCost(event.target.value);
     }
 
-    const saveData = () => {
+    const saveData = async () => {
         let today = new Date();
-        setCookie('days', today.getTime() - days * 24 * 60 * 60 * 1000, {path: '/'});
+        let timestamp = today.getTime() - days * 24 * 60 * 60 * 1000
+        setCookie('days', timestamp, {path: '/'});
         setCookie('drink', drink, {path: '/'});
         setCookie('type', type, {path: '/'});
         setCookie('cost', cost, {path: '/'});
+
+        if (props.uid !== "") {
+            await addData("user_sober_data", props.uid, {
+                days: timestamp,
+                drinkCount: drink,
+                cost: cost,
+                type: type
+            });
+        }
         props.reload();
     }
 
