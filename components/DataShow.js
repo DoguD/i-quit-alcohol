@@ -2,7 +2,7 @@ import {useCookies} from "react-cookie";
 import {useEffect, useState} from "react";
 import styles from "@/app/page.module.css";
 import {Button} from "@mui/joy";
-import {addData, deleteData} from "@/components/Firebase/FireStore";
+import {deleteData} from "@/components/Firebase/FireStore";
 
 const drinkToEmoji = {
     "beer": "🍺",
@@ -39,15 +39,6 @@ export default function DataShow(props) {
         setDrinkCount(drinkCount);
         setCost(cost);
         setType(type);
-
-        if (props.uid !== "") {
-            addData("user_sober_data", props.uid, {
-                days: cookies.days,
-                drinkCount: cookies.drink,
-                cost: cookies.cost,
-                type: cookies.type
-            });
-        }
     }, [props.uid]);
 
     const deleteAllCookies = async () => {
