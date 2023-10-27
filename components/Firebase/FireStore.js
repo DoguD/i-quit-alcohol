@@ -14,7 +14,6 @@ export async function addData(colllection, id, data) {
         error = e;
     }
 
-    console.log(result, error);
     return { result, error };
 }
 
@@ -30,7 +29,6 @@ export async function getData(collection, id) {
         error = e;
     }
 
-    console.log(result, error);
     return { result, error };
 }
 
@@ -46,6 +44,5 @@ export async function deleteData(collection, id) {
         error = e;
     }
 
-    console.log(result, error);
     return {result, error};
 }
