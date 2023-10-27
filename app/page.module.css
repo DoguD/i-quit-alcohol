@@ -254,9 +254,25 @@
 }
 
 .footerText {
-    color: gray;
+    color: rgb(128, 128, 128);
     position: absolute;
     bottom: 32px;
+}
+
+.signInExplanationText {
+    color: rgb(128, 128, 128);
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.buttonSignInWithGoogle {
+    background-color: white;
+    border: 1px solid black;
+    padding: 4px 16px;
+
+    color: black;
+    font-size: 16px;
+    font-family: 'Roboto', sans-serif;
 }
 
 .footerText a {
@@ -304,5 +320,14 @@
         align-items: center;
         justify-content: center;
         flex-wrap: wrap;
+    }
+
+    .signInRow {
+        flex-direction: column;
+    }
+
+    .signInExplanationText {
+        margin-bottom: 4px;
+        text-align: center;
     }
 }
