@@ -13,7 +13,7 @@ export async function calculateAverages(accessToken, startTimestamp) {
     } else {
         let curDate = new Date();
         const parsedData = {
-            timestamp: curDate.toISOString(),
+            timestamp: curDate.toString(),
             before: {
                 sleep_total: sleepData[1][0],
                 sleep_deep: sleepData[1][1],

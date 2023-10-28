@@ -50,11 +50,12 @@ export default function Home() {
             }
         }
     }
+
     // OURA FIRST CONNECTION END
 
     // OURA ALREADY CONNECTED START
     useEffect(() => {
-       getOuraDataFromFirebase(uid);
+        getOuraDataFromFirebase(uid);
     }, [uid]);
 
     async function getOuraDataFromFirebase(uid) {
@@ -87,6 +88,7 @@ export default function Home() {
             }
         }
     }
+
     // OURA ALREADY CONNECTED END
 
     // LOCAL DATA START
@@ -152,6 +154,7 @@ export default function Home() {
             console.log("Error signing out: ", error);
         });
     }
+
     // FIREBASE AUTH END
 
     return (
@@ -174,7 +177,8 @@ export default function Home() {
                        style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>}
             </div>
 
-            {uid !== "" && showData === 1 ? <Oura uid={uid} ouraData={ouraData}/>
+            {uid !== "" && showData === 1 ?
+                <Oura uid={uid} ouraData={ouraData} refresh={() => getOuraData(uid, searchParams, cookies)}/>
                 : null}
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}

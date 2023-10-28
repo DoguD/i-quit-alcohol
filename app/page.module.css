@@ -321,8 +321,20 @@
     color: black;
 }
 
+.ouraScore {
+    font-size: 24px;
+    color: black;
+    margin: 16px 0 8px;
+}
+
+.ouraScoreSub {
+    font-size: 20px;
+    color: black;
+    margin: 0 0 16px;
+}
+
 .ouraImage {
-    width: 140px;
+    width: 80px;
 }
 
 .ouraDescription {
