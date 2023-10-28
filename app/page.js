@@ -9,12 +9,46 @@ import {useCookies} from "react-cookie";
 import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 import {addData, getData} from "@/components/Firebase/FireStore";
-import Oura from "@/components/Oura";
+import Oura from "@/components/Oura/Oura";
+
+import {useSearchParams, useRouter} from "next/navigation";
+import {calculateAverages} from "@/components/Oura/OuraUtility";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
     const [showData, setShowData] = useState(-1);
     const [uid, setUid] = useState("");
+    const searchParams = useSearchParams();
+    const router = useRouter();
+
+    // (Post Oura redirection) Redirect with proper format for reading url params
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const url = window.location.href;
+            if (url.includes('/#')) {
+                router.replace(url.replace('/#', '/?'));
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        getOuraData(uid, searchParams, cookies);
+    }, [searchParams, uid, cookies]);
+
+    async function getOuraData(uid, searchParams, cookies) {
+        if (uid !== "" && searchParams.has("access_token") && typeof cookies.days !== "undefined") {
+            await addData("user_oura_key", uid, {
+                access_token: searchParams.get("access_token")
+            });
+
+            const ouraData = await calculateAverages(searchParams.get("access_token"), cookies.days);
+            console.log(ouraData);
+            if (!ouraData[0]) {
+                await addData("user_oura_data", uid, ouraData[1]);
+                console.log("Data added to firebase successfuly.")
+            }
+        }
+    }
 
     useEffect(() => {
         if (typeof cookies.days !== "undefined") {

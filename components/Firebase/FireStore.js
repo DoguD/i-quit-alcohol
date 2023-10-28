@@ -14,6 +14,7 @@ export async function addData(colllection, id, data) {
         error = e;
     }
 
+    console.log(result, error);
     return { result, error };
 }
 
