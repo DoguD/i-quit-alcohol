@@ -9,6 +9,7 @@ import {useCookies} from "react-cookie";
 import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 import {addData, getData} from "@/components/Firebase/FireStore";
+import Oura from "@/components/Oura";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
@@ -87,6 +88,7 @@ export default function Home() {
                 <p className={styles.signInExplanationText}>
                     {uid === "" ? "You can save your data and sync across devices by signing in."
                         : ""}</p>
+
                 {uid === "" ?
                     <div style={{cursor: 'pointer'}} onClick={() => signInWithGoogle()}>
                         <img src={'/google/web_light_rd_SI@4x.png'} alt={"Google Sign-In Button"} width={160}/>
@@ -94,6 +96,9 @@ export default function Home() {
                     <p className={styles.signInExplanationText} onClick={() => signOutClient()}
                        style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>}
             </div>
+
+            {uid !== "" && showData === 1 ? <Oura uid={uid}/>
+                : null}
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}
                                                                 rel={"noopener"}>Dogu</a></p>
