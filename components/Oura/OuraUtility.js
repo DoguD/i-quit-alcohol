@@ -11,7 +11,9 @@ export async function calculateAverages(accessToken, startTimestamp) {
     if (sleepData[0] || activityData[0] || readinessData[0]) {
         return [true, {}];
     } else {
+        let curDate = new Date();
         const parsedData = {
+            timestamp: curDate.toISOString(),
             before: {
                 sleep_total: sleepData[1][0],
                 sleep_deep: sleepData[1][1],

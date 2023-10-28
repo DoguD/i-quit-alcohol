@@ -15,13 +15,15 @@ import {useSearchParams, useRouter} from "next/navigation";
 import {calculateAverages} from "@/components/Oura/OuraUtility";
 
 export default function Home() {
-    const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
-    const [showData, setShowData] = useState(-1);
-    const [uid, setUid] = useState("");
     const searchParams = useSearchParams();
     const router = useRouter();
 
-    // (Post Oura redirection) Redirect with proper format for reading url params
+    const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
+    const [showData, setShowData] = useState(-1);
+    const [uid, setUid] = useState("");
+    const [ouraData, setOuraData] = useState(null);
+
+    // OURA FIRST CONNECTION START
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const url = window.location.href;
@@ -42,14 +44,52 @@ export default function Home() {
             });
 
             const ouraData = await calculateAverages(searchParams.get("access_token"), cookies.days);
-            console.log(ouraData);
             if (!ouraData[0]) {
                 await addData("user_oura_data", uid, ouraData[1]);
-                console.log("Data added to firebase successfuly.")
+                setOuraData(ouraData[1]);
             }
         }
     }
+    // OURA FIRST CONNECTION END
 
+    // OURA ALREADY CONNECTED START
+    useEffect(() => {
+       getOuraDataFromFirebase(uid);
+    }, [uid]);
+
+    async function getOuraDataFromFirebase(uid) {
+        if (uid !== "") {
+            let {result, error} = await getData("user_oura_data", uid);
+            if (typeof result !== "undefined" && result !== null && result._document !== null) {
+                let data = result._document.data.value.mapValue.fields;
+
+                const parsedData = {
+                    before: {
+                        sleep_total: data.before.mapValue.fields.sleep_total.doubleValue,
+                        sleep_deep: data.before.mapValue.fields.sleep_deep.doubleValue,
+                        sleep_rem: data.before.mapValue.fields.sleep_rem.doubleValue,
+                        activity: data.before.mapValue.fields.activity.doubleValue,
+                        calorie: data.before.mapValue.fields.calorie.doubleValue,
+                        readiness: data.before.mapValue.fields.readiness.doubleValue
+                    },
+                    sober: {
+                        sleep_total: data.sober.mapValue.fields.sleep_total.doubleValue,
+                        sleep_deep: data.sober.mapValue.fields.sleep_deep.doubleValue,
+                        sleep_rem: data.sober.mapValue.fields.sleep_rem.doubleValue,
+                        activity: data.sober.mapValue.fields.activity.doubleValue,
+                        calorie: data.sober.mapValue.fields.calorie.doubleValue,
+                        readiness: data.sober.mapValue.fields.readiness.doubleValue
+                    },
+                    timestamp: data.timestamp.stringValue
+                }
+
+                setOuraData(parsedData);
+            }
+        }
+    }
+    // OURA ALREADY CONNECTED END
+
+    // LOCAL DATA START
     useEffect(() => {
         if (typeof cookies.days !== "undefined") {
             setShowData(1);
@@ -57,7 +97,9 @@ export default function Home() {
             setShowData(0);
         }
     }, []);
+    // LOCAL DATA END
 
+    // FIREBASE AUTH START
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -77,7 +119,7 @@ export default function Home() {
     async function getDataOfUser(uid) {
         let {result, error} = await getData("user_sober_data", uid);
 
-        // If there is no data in the server, put it to cookie
+        // If there is data in the server, put it to cookie
         if (result._document != null) {
             let data = result._document.data.value.mapValue.fields;
             let days = data.days.stringValue;
@@ -110,6 +152,7 @@ export default function Home() {
             console.log("Error signing out: ", error);
         });
     }
+    // FIREBASE AUTH END
 
     return (
         <main className={styles.main}>
@@ -131,7 +174,7 @@ export default function Home() {
                        style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>}
             </div>
 
-            {uid !== "" && showData === 1 ? <Oura uid={uid}/>
+            {uid !== "" && showData === 1 ? <Oura uid={uid} ouraData={ouraData}/>
                 : null}
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}
