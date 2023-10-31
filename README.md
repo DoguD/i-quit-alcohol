@@ -3,9 +3,12 @@ Simple one-page website to encourage people who quit alcohol.
 ### TODO
 - [ ] Add a favicon
 - [ ] Loaders for smooth transition
-- [x] Sign-in system and data sync
-- [ ] Oura Ring integration
 - [ ] Some phones may have a problem with signing in
+- [x] Sign-in system and data sync
+
+### Integrations
+- [ ] Oura Ring integration
+- [ ] WakaTime integration
 
 Pull requests are welcome. ❤️
 
