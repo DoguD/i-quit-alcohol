@@ -1,10 +1,10 @@
 import {OURA_BEFORE_ALCOHOL_MONTHS, OURA_DATA_URL} from "@/components/Constants";
 
-export async function calculateAverages(accessToken, startTimestamp) {
+export async function calculateAverages(accessToken, startTimestamp, tokenExpiry) {
     const soberDate = new Date(parseInt(startTimestamp));
     const startDate = new Date(startTimestamp - (OURA_BEFORE_ALCOHOL_MONTHS * 30 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 10);
 
-    const sleepData = await calculateSleep(accessToken, startDate, soberDate);
+    const sleepData = await calculateSleep(accessToken, startDate, soberDate, tokenExpiry);
     const activityData = await calculateActivity(accessToken, startDate, soberDate);
     const readinessData = await calculateReadiness(accessToken, startDate, soberDate);
 
@@ -36,7 +36,7 @@ export async function calculateAverages(accessToken, startTimestamp) {
     }
 }
 
-async function calculateSleep(accessToken, startDate, soberDate) {
+async function calculateSleep(accessToken, startDate, soberDate, tokenExpiry) {
     let url = OURA_DATA_URL + 'sleep?' + 'start=' + startDate + '&access_token=' + accessToken;
 
     let sleepScore = 0;
@@ -52,7 +52,10 @@ async function calculateSleep(accessToken, startDate, soberDate) {
 
     await fetch(url).then(response => response.json())
         .then(response => {
-            if ('sleep' in response) {
+            if (response.status === 401) {
+                tokenExpiry();
+            }
+            else if ('sleep' in response) {
                 let sleepData = response.sleep;
                 for (let i = 0; i < sleepData.length; i++) {
                     let curDate = new Date(sleepData[i].summary_date);

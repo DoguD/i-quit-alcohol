@@ -63,7 +63,7 @@ export default function Oura(props) {
     // Calculate oura data and push to Firebase
     async function getOuraData(uid, access_token, cookies) {
         if (uid !== "" && access_token !== "" && typeof cookies.days !== "undefined") {
-            const ouraData = await calculateAverages(access_token, cookies.days);
+            const ouraData = await calculateAverages(access_token, cookies.days, () => connectToOura());
             if (!ouraData[0]) {
                 setOuraData(ouraData[1]);
                 await addData("user_oura_data", uid, ouraData[1]);
