@@ -1,7 +1,8 @@
 import {app} from "./Firebase";
-import { getFirestore, doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
+import {getFirestore, doc, setDoc, getDoc, deleteDoc} from "firebase/firestore";
 
 const db = getFirestore(app)
+
 export async function addData(colllection, id, data) {
     let result = null;
     let error = null;
@@ -14,7 +15,8 @@ export async function addData(colllection, id, data) {
         error = e;
     }
 
-    return { result, error };
+    console.log(result, error);
+    return {result, error};
 }
 
 export async function getData(collection, id) {
@@ -26,10 +28,12 @@ export async function getData(collection, id) {
     try {
         result = await getDoc(docRef);
     } catch (e) {
+        console.log("Get data error");
+        console.log(e);
         error = e;
     }
 
-    return { result, error };
+    return {result, error};
 }
 
 export async function deleteData(collection, id) {

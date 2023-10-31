@@ -306,6 +306,42 @@
     font-weight: bold;
 }
 
+.ouraContainer {
+    width: 800px;
+    border-radius: 8px;
+    border: solid black;
+    padding: 16px;
+
+    margin-top: 32px;
+}
+
+.ouraTitle {
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+}
+
+.ouraScore {
+    font-size: 24px;
+    color: black;
+    margin: 16px 0 8px;
+}
+
+.ouraScoreSub {
+    font-size: 20px;
+    color: black;
+    margin: 0 0 16px;
+}
+
+.ouraImage {
+    width: 80px;
+}
+
+.ouraDescription {
+    color: rgb(128, 128, 128);
+    font-size: 16px;
+}
+
 @media (max-width: 600px) {
     .main {
         padding: 32px 16px;

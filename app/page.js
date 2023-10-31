@@ -9,12 +9,18 @@ import {useCookies} from "react-cookie";
 import {auth, signInWithGoogle} from "@/components/Firebase/Firebase";
 import {onAuthStateChanged, signOut} from "firebase/auth";
 import {addData, getData} from "@/components/Firebase/FireStore";
+import Oura from "@/components/Oura/Oura";
+
+import {calculateAverages} from "@/components/Oura/OuraUtility";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
     const [showData, setShowData] = useState(-1);
     const [uid, setUid] = useState("");
 
+    // OURA ALREADY CONNECTED END
+
+    // LOCAL DATA START
     useEffect(() => {
         if (typeof cookies.days !== "undefined") {
             setShowData(1);
@@ -22,7 +28,9 @@ export default function Home() {
             setShowData(0);
         }
     }, []);
+    // LOCAL DATA END
 
+    // FIREBASE AUTH START
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -42,7 +50,7 @@ export default function Home() {
     async function getDataOfUser(uid) {
         let {result, error} = await getData("user_sober_data", uid);
 
-        // If there is no data in the server, put it to cookie
+        // If there is data in the server, put it to cookie
         if (result._document != null) {
             let data = result._document.data.value.mapValue.fields;
             let days = data.days.stringValue;
@@ -75,6 +83,7 @@ export default function Home() {
             console.log("Error signing out: ", error);
         });
     }
+    // FIREBASE AUTH END
 
     return (
         <main className={styles.main}>
@@ -87,6 +96,7 @@ export default function Home() {
                 <p className={styles.signInExplanationText}>
                     {uid === "" ? "You can save your data and sync across devices by signing in."
                         : ""}</p>
+
                 {uid === "" ?
                     <div style={{cursor: 'pointer'}} onClick={() => signInWithGoogle()}>
                         <img src={'/google/web_light_rd_SI@4x.png'} alt={"Google Sign-In Button"} width={160}/>
@@ -94,6 +104,12 @@ export default function Home() {
                     <p className={styles.signInExplanationText} onClick={() => signOutClient()}
                        style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>}
             </div>
+
+            {uid !== "" && showData === 1 ?
+                <Oura
+                    uid={uid}
+                    cookies={cookies}/>
+                : null}
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}
                                                                 rel={"noopener"}>Dogu</a></p>
