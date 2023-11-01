@@ -7,7 +7,7 @@ Simple one-page website to encourage people who quit alcohol.
 - [x] Sign-in system and data sync
 
 ### Integrations
-- [ ] Oura Ring integration
+- [x] Oura Ring integration
 - [ ] WakaTime integration
 
 Pull requests are welcome. ❤️
