@@ -175,7 +175,7 @@ export default function Oura(props) {
                                 style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.activity * 100 / ouraData.before.activity) - 100).toFixed(2)}%</b></span>}
                     </p>
                     <p className={styles.ouraScoreSub}>You
-                        burned {Math.abs(ouraData.sober.calorie - ouraData.before.calorie).toFixed(0)} calories {ouraData.sober.calorie > ouraData.before.calorie ? "more" : "less"} daily
+                        burned <b>{Math.abs(ouraData.sober.calorie - ouraData.before.calorie).toFixed(0)} calories {ouraData.sober.calorie > ouraData.before.calorie ? "more" : "less"}</b> daily
                         on average.</p>
 
                     <p className={styles.signInExplanationText} style={{width: '100%', textAlign: 'right'}}>Last synced
