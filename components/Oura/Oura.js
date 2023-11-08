@@ -6,12 +6,20 @@ import {OURA_URL, OURA_CLIENT_ID, OURA_REDIRECT_URI} from "@/components/Constant
 import {useEffect, useState} from "react";
 import {addData, getData} from "@/components/Firebase/FireStore";
 import {calculateAverages} from "@/components/Oura/OuraUtility";
+import {useCookies} from "react-cookie";
 
 export default function Oura(props) {
+    const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const [ouraData, setOuraData] = useState(null);
+
+    useEffect(() => {
+        if (typeof cookies.oura !== "undefined") {
+            setOuraData(cookies.oura);
+        }
+    }, []);
 
     // Redirection after connection for url params
     useEffect(() => {
@@ -66,6 +74,7 @@ export default function Oura(props) {
             const ouraData = await calculateAverages(access_token, cookies.days, () => connectToOura());
             if (!ouraData[0]) {
                 setOuraData(ouraData[1]);
+                setCookie('oura', JSON.stringify(ouraData[1]), {path: '/'})
                 await addData("user_oura_data", uid, ouraData[1]);
             }
         }

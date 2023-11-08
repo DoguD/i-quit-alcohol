@@ -18,17 +18,18 @@ export default function Home() {
     const [showData, setShowData] = useState(-1);
     const [uid, setUid] = useState("");
 
-    // OURA ALREADY CONNECTED END
-
-    // LOCAL DATA START
     useEffect(() => {
+        // User
+        if (typeof cookies.login !== "undefined") {
+            setUid(cookies.login);
+        }
+        // Not drinking data
         if (typeof cookies.days !== "undefined") {
             setShowData(1);
         } else {
             setShowData(0);
         }
     }, []);
-    // LOCAL DATA END
 
     // FIREBASE AUTH START
     useEffect(() => {
@@ -36,6 +37,7 @@ export default function Home() {
             if (user) {
                 const uid = user.uid;
                 setUid(uid);
+                setCookie('login', uid, {path: '/'});
             }
         });
     }, [])
@@ -79,37 +81,46 @@ export default function Home() {
     function signOutClient() {
         signOut(auth).then(() => {
             setUid("");
+            removeCookie('login');
         }).catch((error) => {
             console.log("Error signing out: ", error);
         });
     }
+
     // FIREBASE AUTH END
 
     return (
         <main className={styles.main}>
             {showData === -1 ? <div/> :
-                showData === 1 ? <DataShow reload={() => setShowData(0)} uid={uid}/> :
-                    <DataInput reload={() => setShowData(1)} uid={uid}/>
+                <>
+                    {showData === 1 ? <DataShow reload={() => setShowData(0)} uid={uid}/> :
+                        <DataInput reload={() => setShowData(1)} uid={uid}/>}
+
+                    <div className={styles.centeredRow + " " + styles.signInRow} style={{marginTop: 16}}>
+                        <p className={styles.signInExplanationText}>
+                            {uid === "" ? "You can save your data and sync across devices by signing in."
+                                : ""}</p>
+
+                        {uid === "" ?
+                            <div style={{cursor: 'pointer'}} onClick={() => signInWithGoogle()}>
+                                <img src={'/google/web_light_rd_SI@4x.png'} alt={"Google Sign-In Button"} width={160}/>
+                            </div> :
+                            <>
+                                <p className={styles.signInExplanationText} onClick={() => signOutClient()}
+                                   style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>
+                            </>
+                        }
+                    </div>
+
+                    {showData === 1 ?
+                        <Oura
+                            uid={uid}
+                            cookies={cookies}/>
+                        : null}
+                </>
             }
 
-            <div className={styles.centeredRow + " " + styles.signInRow} style={{marginTop: 16}}>
-                <p className={styles.signInExplanationText}>
-                    {uid === "" ? "You can save your data and sync across devices by signing in."
-                        : ""}</p>
 
-                {uid === "" ?
-                    <div style={{cursor: 'pointer'}} onClick={() => signInWithGoogle()}>
-                        <img src={'/google/web_light_rd_SI@4x.png'} alt={"Google Sign-In Button"} width={160}/>
-                    </div> :
-                    <p className={styles.signInExplanationText} onClick={() => signOutClient()}
-                       style={{textDecoration: "underline", cursor: 'pointer'}}>Logout</p>}
-            </div>
-
-            {uid !== "" && showData === 1 ?
-                <Oura
-                    uid={uid}
-                    cookies={cookies}/>
-                : null}
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}
                                                                 rel={"noopener"}>Dogu</a></p>
