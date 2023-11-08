@@ -7,10 +7,12 @@ import {useEffect, useState} from "react";
 import {addData, getData} from "@/components/Firebase/FireStore";
 import {calculateAverages} from "@/components/Oura/OuraUtility";
 import {useCookies} from "react-cookie";
+import {BiRefresh} from "react-icons/bi";
 
 export default function Oura(props) {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
     const router = useRouter();
+    const [refreshing, setRefreshing] = useState(false);
     const searchParams = useSearchParams();
 
     const [ouraData, setOuraData] = useState(null);
@@ -76,6 +78,7 @@ export default function Oura(props) {
                 setOuraData(ouraData[1]);
                 setCookie('oura', JSON.stringify(ouraData[1]), {path: '/'})
                 await addData("user_oura_data", uid, ouraData[1]);
+                setRefreshing(false);
             }
         }
     }
@@ -114,6 +117,7 @@ export default function Oura(props) {
 
     // Refresh (recalculate) Oura data and push to Firebase
     async function refresh() {
+        setRefreshing(true);
         let {result, error} = await getData("user_oura_key", props.uid);
 
         if (typeof result !== "undefined" && result !== null && result._document !== null) {
@@ -187,12 +191,24 @@ export default function Oura(props) {
                         burned <b>{Math.abs(ouraData.sober.calorie - ouraData.before.calorie).toFixed(0)} calories {ouraData.sober.calorie > ouraData.before.calorie ? "more" : "less"}</b> daily
                         on average.</p>
 
-                    <p className={styles.signInExplanationText} style={{width: '100%', textAlign: 'right'}}>Last synced
-                        on {ouraData.timestamp.slice(0, 21)} <span
-                            onClick={async () => await refresh()}
-                            style={{textDecoration: "underline", cursor: "pointer"}}>
-                            Refresh
-                        </span></p>
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'row',
+                        margin: 0,
+                        padding: 0,
+                        alignItems: 'center'
+                    }}>
+                        <p className={styles.signInExplanationText} style={{width: '100%', textAlign: 'right'}}>Last
+                            synced
+                            on {ouraData.timestamp.slice(0, 21)}
+                        </p>
+                        <div
+                            className={refreshing ? styles.loaderIcon : styles.loaderIconNotSpinning}
+                            onClick={async () => await refresh()}>
+                            <BiRefresh size={24} color={"rgb(128, 128, 128)"}/>
+                        </div>
+                    </div>
                 </>
             }
         </div>
