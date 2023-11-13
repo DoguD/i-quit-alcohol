@@ -8,7 +8,7 @@ Simple one-page website to encourage people who quit alcohol.
 
 ### Integrations
 - [x] Oura Ring integration
-- [ ] WakaTime integration
+- [x] WakaTime integration
 
 Pull requests are welcome. ❤️
 

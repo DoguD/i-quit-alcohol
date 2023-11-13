@@ -255,8 +255,7 @@
 
 .footerText {
     color: rgb(128, 128, 128);
-    position: absolute;
-    bottom: 32px;
+    position: unset;
 }
 
 .signInExplanationText {
@@ -359,6 +358,29 @@
 .ouraDescription {
     color: rgb(128, 128, 128);
     font-size: 16px;
+}
+
+.wakatimeImage {
+    width: 154px;
+}
+
+.wakatimeConnectionDetailImage {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 8px;
+    margin-top: 16px;
+}
+
+.wakaConnectionRow {
+    display: flex;
+    flex-direction: row;
+    margin: 16px 0 0 0;
+    padding: 0;
+}
+
+.wakaInput {
+    font-size: 28px;
+    font-weight: normal;
 }
 
 @media (max-width: 600px) {

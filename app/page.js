@@ -12,6 +12,7 @@ import {addData, getData} from "@/components/Firebase/FireStore";
 import Oura from "@/components/Oura/Oura";
 
 import {calculateAverages} from "@/components/Oura/OuraUtility";
+import Wakatime from "@/components/Wakatime/Wakatime";
 
 export default function Home() {
     const [cookies, setCookie, removeCookie, getCookie] = useCookies(['cookie-name']);
@@ -117,13 +118,17 @@ export default function Home() {
                             uid={uid}
                             cookies={cookies}/>
                         : null}
+
+                    {showData === 1 ?
+                        <Wakatime uid={uid}/> : null}
                 </>
             }
 
-
+            {/*
             <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
                                                                 target={"_blank"}
                                                                 rel={"noopener"}>Dogu</a></p>
+                                                                */}
         </main>
     )
 }
