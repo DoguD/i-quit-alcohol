@@ -92,7 +92,7 @@ export default function Wakatime(props) {
             <div className={styles.titleRow}>
                 {wakaData === null ?
                     <p className={styles.ouraTitle} style={{marginRight: 16}}>Connect with</p> : null}
-                <img src={'/wakatime/Logo + Text Horizontal.svg'} alt={'Wakatime Logo'}
+                <img src={'/wakatime/horizontal.svg'} alt={'Wakatime Logo'}
                      className={styles.wakatimeImage}/>
             </div>
             {wakaData === null ?
