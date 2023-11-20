@@ -7,11 +7,13 @@ export async function getWakatimeData(url, startTimestamp) {
 
     // Get raw data
     const response = await fetch(url);
+    console.log(response)
     if (response.status === 200) {
         const data = await response.json();
-
-        if (data.status === "ok") {
+        console.log(data)
+        if (data.status === "ok" || data.status === "pending_update") {
             const daysData = data.days;
+            console.log(daysData)
             // Parse raw data
 
             let totals = [0, 0];
@@ -33,7 +35,7 @@ export async function getWakatimeData(url, startTimestamp) {
             }
             totals[0] /= count[0];
             totals[1] /= count[1];
-            return [false, totals, (new Date()).toString()];
+            return [false, totals, (new Date(Date.parse(daysData[daysData.length - 1].date))).toString()];
         }
     }
 

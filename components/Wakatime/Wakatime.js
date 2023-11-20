@@ -2,7 +2,7 @@ import styles from '../../app/page.module.css'
 import {Button, Input} from "@mui/joy";
 
 import {useEffect, useState} from "react";
-import {addData, getData} from "@/components/Firebase/FireStore";
+import {addData, deleteData, getData} from "@/components/Firebase/FireStore";
 import {useCookies} from "react-cookie";
 import {BiRefresh} from "react-icons/bi";
 import {getWakatimeData} from "@/components/Wakatime/WakatimeUtility";
@@ -50,6 +50,7 @@ export default function Wakatime(props) {
 
     // Main get data function
     async function getAndUpdateWakatimeData(url) {
+        console.log("Wakatime updating URL: ", url);
         let wakatimeData = await getWakatimeData(url, cookies.days);
         if (!wakatimeData[0]) {
             let parsedData = {
@@ -68,10 +69,12 @@ export default function Wakatime(props) {
     async function refresh() {
         setRefreshing(true);
         let {result, error} = await getData("user_waka_url", props.uid);
+        console.log(result)
 
         if (typeof result !== "undefined" && result !== null && result._document !== null) {
             let data = result._document.data.value.mapValue.fields;
             const url = data.url.stringValue;
+            console.log(url);
 
             await getAndUpdateWakatimeData(url)
         }
@@ -83,8 +86,15 @@ export default function Wakatime(props) {
         await addData("user_waka_url", props.uid, {
             url: connectionUrl
         });
-        getAndUpdateWakatimeData(connectionUrl);
+        await getAndUpdateWakatimeData(connectionUrl);
         setIsConnecting(false);
+    }
+
+    async function disconnectWakaTime() {
+        setWakaData(null);
+        removeCookie("waka");
+        await deleteData('user_waka_url', props.uid);
+        await deleteData('user_waka_data', props.uid);
     }
 
     return (
@@ -164,9 +174,12 @@ export default function Wakatime(props) {
                         padding: 0,
                         alignItems: 'center'
                     }}>
+                        <p className={styles.signInExplanationText}
+                           style={{color: "darkred", textDecoration: "underline", cursor: "pointer"}}
+                           onClick={() => disconnectWakaTime()}>Disconnect</p>
                         <p className={styles.signInExplanationText} style={{width: '100%', textAlign: 'right'}}>Last
                             synced
-                            on {wakaData.timestamp.slice(0, 21)}
+                            on {wakaData.timestamp.slice(0, 15)}
                         </p>
                         <div
                             className={refreshing ? styles.loaderIcon : styles.loaderIconNotSpinning}
