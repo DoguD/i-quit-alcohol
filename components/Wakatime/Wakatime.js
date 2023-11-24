@@ -40,6 +40,10 @@ export default function Wakatime(props) {
                 const parsedData = {
                     before: data.before.doubleValue,
                     after: data.after.doubleValue,
+                    beforeWorkingCount: data.beforeWorkingCount.doubleValue,
+                    afterWorkingCount: data.afterWorkingCount.doubleValue,
+                    beforeWorking: data.beforeWorking.doubleValue,
+                    afterWorking: data.afterWorking.doubleValue,
                     timestamp: data.timestamp.stringValue
                 }
 
@@ -56,7 +60,11 @@ export default function Wakatime(props) {
             let parsedData = {
                 before: wakatimeData[1][0],
                 after: wakatimeData[1][1],
-                timestamp: wakatimeData[2]
+                beforeWorking: wakatimeData[2][0],
+                afterWorking: wakatimeData[2][1],
+                beforeWorkingCount: wakatimeData[3][0] / wakatimeData[4][0] * 7,
+                afterWorkingCount: wakatimeData[3][1] / wakatimeData[4][1] * 7,
+                timestamp: wakatimeData[5]
             }
             console.log(parsedData)
             setWakaData(parsedData);
@@ -160,10 +168,45 @@ export default function Wakatime(props) {
 
                     <p className={styles.ouraScoreSub}>Your daily average <span
                         style={{
-                            color: wakaData.after > wakaData.before ? "darkgreen" : 'darkgreen',
+                            color: wakaData.after > wakaData.before ? "darkgreen" : 'darkred',
                         }}>{wakaData.after > wakaData.before ? "increased" : "decreased"}</span> from
                         <b>{" "}{Math.floor(wakaData.before / 60 / 60)}h {Math.floor((wakaData.before / 60 / 60 - Math.floor(wakaData.before / 60 / 60)) * 60)}m</b> to
                         {" "}<b>{Math.floor(wakaData.after / 60 / 60)}h {Math.floor((wakaData.after / 60 / 60 - Math.floor(wakaData.after / 60 / 60)) * 60)}m</b>
+                    </p>
+
+                    <p className={styles.ouraScore}>
+                        <b>☕ Productive Days</b>
+                        {wakaData.afterWorkingCount > wakaData.beforeWorkingCount ?
+                            <span
+                                style={{color: 'darkgreen'}}> improved by <b>{((wakaData.afterWorkingCount * 100 / wakaData.beforeWorkingCount) - 100).toFixed(2)}%</b></span>
+                            : <span
+                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((wakaData.afterWorkingCount * 100 / wakaData.beforeWorkingCount) - 100).toFixed(2)}%</b></span>}
+                    </p>
+
+                    <p className={styles.ouraScoreSub}>Your weekly working day average <span
+                        style={{
+                            color: wakaData.afterWorkingCount > wakaData.beforeWorkingCount ? "darkgreen" : 'darkred',
+                        }}>{wakaData.afterWorkingCount > wakaData.beforeWorkingCount ? "increased" : "decreased"}</span> from
+                        <b>{" "}{Math.floor(wakaData.beforeWorkingCount * 100)/100} days</b> to
+                        {" "}<b>{Math.floor(wakaData.afterWorkingCount * 100)/100} days</b>
+                    </p>
+
+                    <p className={styles.ouraScore} style={{marginBottom: 0}}>
+                        <b>💻 Productive Days Activity</b>
+                        {wakaData.afterWorking > wakaData.beforeWorking ?
+                            <span
+                                style={{color: 'darkgreen'}}> improved by <b>{((wakaData.afterWorking * 100 / wakaData.beforeWorking) - 100).toFixed(2)}%</b></span>
+                            : <span
+                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((wakaData.afterWorking * 100 / wakaData.beforeWorking) - 100).toFixed(2)}%</b></span>}
+                    </p>
+                    <p className={styles.ouraDescription} style={{marginBottom: 8}}>(Days with no-coding time are removed.)</p>
+
+                    <p className={styles.ouraScoreSub}>Your daily average <span
+                        style={{
+                            color: wakaData.afterWorking > wakaData.beforeWorking ? "darkgreen" : 'darkred',
+                        }}>{wakaData.afterWorking > wakaData.beforeWorking ? "increased" : "decreased"}</span> from
+                        <b>{" "}{Math.floor(wakaData.beforeWorking / 60 / 60)}h {Math.floor((wakaData.beforeWorking / 60 / 60 - Math.floor(wakaData.beforeWorking / 60 / 60)) * 60)}m</b> to
+                        {" "}<b>{Math.floor(wakaData.afterWorking / 60 / 60)}h {Math.floor((wakaData.afterWorking / 60 / 60 - Math.floor(wakaData.afterWorking / 60 / 60)) * 60)}m</b>
                     </p>
 
                     <div style={{
