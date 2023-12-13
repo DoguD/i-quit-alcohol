@@ -1,5 +1,9 @@
 import {OURA_BEFORE_ALCOHOL_MONTHS, OURA_DATA_URL} from "@/components/Constants";
 
+function twoDecimal(number) {
+    return Math.round(number * 100) / 100;
+}
+
 export async function calculateAverages(accessToken, startTimestamp, tokenExpiry) {
     const soberDate = new Date(parseInt(startTimestamp));
     const startDate = new Date(startTimestamp - (OURA_BEFORE_ALCOHOL_MONTHS * 30 * 24 * 60 * 60 * 1000)).toISOString().slice(0, 10);
@@ -15,20 +19,20 @@ export async function calculateAverages(accessToken, startTimestamp, tokenExpiry
         const parsedData = {
             timestamp: curDate.toString(),
             before: {
-                sleep_total: sleepData[1][0],
-                sleep_deep: sleepData[1][1],
-                sleep_rem: sleepData[1][2],
-                activity: activityData[1][0],
-                calorie: activityData[1][1],
-                readiness: readinessData[1]
+                sleep_total: twoDecimal(sleepData[1][0]),
+                sleep_deep: twoDecimal(sleepData[1][1]),
+                sleep_rem: twoDecimal(sleepData[1][2]),
+                activity: twoDecimal(activityData[1][0]),
+                calorie: twoDecimal(activityData[1][1]),
+                readiness: twoDecimal(readinessData[1])
             },
             sober: {
-                sleep_total: sleepData[2][0],
-                sleep_deep: sleepData[2][1],
-                sleep_rem: sleepData[2][2],
-                activity: activityData[2][0],
-                calorie: activityData[2][1],
-                readiness: readinessData[2]
+                sleep_total: twoDecimal(sleepData[2][0]),
+                sleep_deep: twoDecimal(sleepData[2][1]),
+                sleep_rem: twoDecimal(sleepData[2][2]),
+                activity: twoDecimal(activityData[2][0]),
+                calorie: twoDecimal(activityData[2][1]),
+                readiness: twoDecimal(readinessData[2])
             }
         }
 

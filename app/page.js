@@ -11,7 +11,6 @@ import {onAuthStateChanged, signOut} from "firebase/auth";
 import {addData, getData} from "@/components/Firebase/FireStore";
 import Oura from "@/components/Oura/Oura";
 
-import {calculateAverages} from "@/components/Oura/OuraUtility";
 import Wakatime from "@/components/Wakatime/Wakatime";
 
 export default function Home() {
