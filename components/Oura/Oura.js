@@ -4,7 +4,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 
 import {OURA_URL, OURA_CLIENT_ID, OURA_REDIRECT_URI} from "@/components/Constants";
 import {useEffect, useState} from "react";
-import {addData, getData} from "@/components/Firebase/FireStore";
+import {addData, deleteData, getData} from "@/components/Firebase/FireStore";
 import {calculateAverages} from "@/components/Oura/OuraUtility";
 import {useCookies} from "react-cookie";
 import {BiRefresh} from "react-icons/bi";
@@ -70,6 +70,36 @@ export default function Oura(props) {
         router.push(url)
     }
 
+    // Oura Disconnect
+    async function disconnectOura() {
+        const access_token = await getOuraKeyFromFirebase(props.uid);
+        if (access_token !== "error") {
+            // UI Change
+            setOuraData(null);
+            
+            // Firebase data delete
+            await deleteData('user_oura_data', props.uid);
+            await deleteData('user_oura_key', props.uid);
+
+            // Cookie delete
+            removeCookie('oura');
+
+            // Oura Access Revoke
+            let url = OURA_URL + "revoke?access_token=" + access_token;
+            console.log(url);
+            try {
+                await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                });
+            } catch (e) {
+                console.log("Oura disconnect error", e);
+            }
+        }
+    }
+
     // Calculate oura data and push to Firebase
     async function getOuraData(uid, access_token, cookies) {
         if (uid !== "" && access_token !== "" && typeof cookies.days !== "undefined") {
@@ -115,15 +145,22 @@ export default function Oura(props) {
         }
     }
 
-    // Refresh (recalculate) Oura data and push to Firebase
-    async function refresh() {
-        setRefreshing(true);
+    // Get Key from Firebase
+    async function getOuraKeyFromFirebase(uid) {
         let {result, error} = await getData("user_oura_key", props.uid);
 
         if (typeof result !== "undefined" && result !== null && result._document !== null) {
             let data = result._document.data.value.mapValue.fields;
-            const access_token = data.access_token.stringValue;
+            return data.access_token.stringValue;
+        }
+        return "error";
+    }
 
+    // Refresh (recalculate) Oura data and push to Firebase
+    async function refresh() {
+        setRefreshing(true);
+        let access_token = await getOuraKeyFromFirebase(props.uid);
+        if (access_token !== "error") {
             await getOuraData(props.uid, access_token, props.cookies);
         }
     }
@@ -199,6 +236,9 @@ export default function Oura(props) {
                         padding: 0,
                         alignItems: 'center'
                     }}>
+                        <p className={styles.signInExplanationText}
+                           style={{color: "darkred", textDecoration: "underline", cursor: "pointer"}}
+                           onClick={() => disconnectOura()}>Disconnect</p>
                         <p className={styles.signInExplanationText} style={{width: '100%', textAlign: 'right'}}>Last
                             synced
                             on {ouraData.timestamp.slice(0, 21)}
