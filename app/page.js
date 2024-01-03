@@ -123,11 +123,10 @@ export default function Home() {
                 </>
             }
 
-            {/*
-            <p className={styles.footerText}>Made with ❤️ by <a href={"https://github.com/DoguD"}
-                                                                target={"_blank"}
-                                                                rel={"noopener"}>Dogu</a></p>
-                                                                */}
+            <p className={showData === 1 ? styles.footerTextWithData : styles.footerText}>Made with ❤️ by <a
+                href={"https://github.com/DoguD"}
+                target={"_blank"}
+                rel={"noopener"}>Dogu</a></p>
         </main>
     )
 }

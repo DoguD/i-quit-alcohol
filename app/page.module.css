@@ -230,7 +230,7 @@
     }
 }
 
-.titleRow{
+.titleRow {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -255,7 +255,13 @@
 
 .footerText {
     color: rgb(128, 128, 128);
-    position: unset;
+    position: absolute;
+    bottom: 32px;
+}
+
+.footerTextWithData {
+    color: rgb(128, 128, 128);
+    margin-top: 64px;
 }
 
 .signInExplanationText {
@@ -294,6 +300,11 @@
 }
 
 .footerText a {
+    color: blue;
+    cursor: pointer;
+}
+
+.footerTextWithData a {
     color: blue;
     cursor: pointer;
 }
@@ -418,7 +429,7 @@
 
     .footerText {
         position: unset;
-        margin-top: 32px;
+        margin-top: 64px;
     }
 
     .ouraScore {
