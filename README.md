@@ -4,6 +4,7 @@ Simple one-page website to encourage people who quit alcohol.
 - [ ] Add a favicon
 - [ ] Loaders for smooth transition
 - [ ] Some phones may have a problem with signing in
+- [ ] Update OURA API to v2
 - [x] Sign-in system and data sync
 
 ### Integrations
