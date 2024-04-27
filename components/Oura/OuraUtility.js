@@ -25,20 +25,20 @@ export async function calculateAverages(accessToken, startTimestamp, tokenExpiry
         const parsedData = {
             timestamp: curDate.toString(),
             before: {
-                sleep_total: twoDecimal(sleepData[1][0]),
-                sleep_deep: twoDecimal(sleepData[1][1]),
-                sleep_rem: twoDecimal(sleepData[1][2]),
-                activity: twoDecimal(activityData[1][0]),
-                calorie: twoDecimal(activityData[1][1]),
-                readiness: twoDecimal(readinessData[1])
+                sleep_total: twoDecimal(sleepData[1][0]) + 0.01,
+                sleep_deep: twoDecimal(sleepData[1][1]) + 0.01,
+                sleep_rem: twoDecimal(sleepData[1][2]) + 0.01,
+                activity: twoDecimal(activityData[1][0]) + 0.01,
+                calorie: twoDecimal(activityData[1][1]) + 0.01,
+                readiness: twoDecimal(readinessData[1]) + 0.01,
             },
             sober: {
-                sleep_total: twoDecimal(sleepData[2][0]),
-                sleep_deep: twoDecimal(sleepData[2][1]),
-                sleep_rem: twoDecimal(sleepData[2][2]),
-                activity: twoDecimal(activityData[2][0]),
-                calorie: twoDecimal(activityData[2][1]),
-                readiness: twoDecimal(readinessData[2])
+                sleep_total: twoDecimal(sleepData[2][0]) + 0.01,
+                sleep_deep: twoDecimal(sleepData[2][1]) + 0.01,
+                sleep_rem: twoDecimal(sleepData[2][2]) + 0.01,
+                activity: twoDecimal(activityData[2][0]) + 0.01,
+                calorie: twoDecimal(activityData[2][1]) + 0.01,
+                readiness: twoDecimal(readinessData[2]) + 0.01
             }
         }
 
