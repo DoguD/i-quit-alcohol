@@ -76,7 +76,7 @@ export default function Oura(props) {
         if (access_token !== "error") {
             // UI Change
             setOuraData(null);
-            
+
             // Firebase data delete
             await deleteData('user_oura_data', props.uid);
             await deleteData('user_oura_key', props.uid);
@@ -190,39 +190,39 @@ export default function Oura(props) {
                         <b>💪 Readiness</b>
                         {ouraData.sober.readiness > ouraData.before.readiness ?
                             <span
-                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.readiness * 100 / ouraData.before.readiness) - 100).toFixed(2)}%</b></span>
+                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.readiness - ouraData.before.readiness) / ouraData.before.readiness * 100).toFixed(2)}%</b></span>
                             : <span
-                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.readiness * 100 / ouraData.before.readiness) - 100).toFixed(2)}%</b></span>}
+                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.readiness - ouraData.before.readiness) / ouraData.before.readiness * 100).toFixed(2)}%</b></span>}
                     </p>
 
                     <p className={styles.ouraScore}><b>😴 Sleep</b>
                         {ouraData.sober.sleep_total > ouraData.before.sleep_total ?
                             <span
-                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.sleep_total * 100 / ouraData.before.sleep_total) - 100).toFixed(2)}%</b></span>
+                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.sleep_total - ouraData.before.sleep_total) / ouraData.before.sleep_total * 100).toFixed(2)}%</b></span>
                             : <span
-                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.sleep_total * 100 / ouraData.before.sleep_total) - 100).toFixed(2)}%</b></span>}
+                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.sleep_total - ouraData.before.sleep_total) / ouraData.before.sleep_total * 100).toFixed(2)}%</b></span>}
                     </p>
                     <p className={styles.ouraScoreSub}>Your deep
                         sleep {ouraData.sober.sleep_deep > ouraData.before.sleep_deep ? "increased" : "decreased"} by <span
                             style={{
-                                color: ouraData.sober.sleep_deep > ouraData.before.sleep_deep ? "darkgreen" : 'darkgreen',
+                                color: ouraData.sober.sleep_deep > ouraData.before.sleep_deep ? "darkgreen" : 'darkred',
                                 fontWeight: 'bold'
-                            }}>{((ouraData.sober.sleep_deep * 100 / ouraData.before.sleep_deep) - 100).toFixed(2)}%</span>
+                            }}>{Math.abs((ouraData.sober.sleep_deep - ouraData.before.sleep_deep) / ouraData.before.sleep_deep * 100).toFixed(2)}%</span>
                     </p>
                     <p className={styles.ouraScoreSub}>Your REM
                         sleep {ouraData.sober.sleep_rem > ouraData.before.sleep_rem ? "increased" : "decreased"} by <span
                             style={{
-                                color: ouraData.sober.sleep_rem > ouraData.before.sleep_rem ? "darkgreen" : 'darkgreen',
+                                color: ouraData.sober.sleep_rem > ouraData.before.sleep_rem ? "darkgreen" : 'darkred',
                                 fontWeight: 'bold'
-                            }}>{((ouraData.sober.sleep_rem * 100 / ouraData.before.sleep_rem) - 100).toFixed(2)}%</span>
+                            }}>{Math.abs((ouraData.sober.sleep_rem - ouraData.before.sleep_rem) / ouraData.before.sleep_rem * 100).toFixed(2)}%</span>
                     </p>
 
                     <p className={styles.ouraScore}><b>🏃 Activity</b>
                         {ouraData.sober.activity > ouraData.before.activity ?
                             <span
-                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.activity * 100 / ouraData.before.activity) - 100).toFixed(2)}%</b></span>
+                                style={{color: 'darkgreen'}}> improved by <b>{((ouraData.sober.activity - ouraData.before.activity) / ouraData.before.activity * 100).toFixed(2)}%</b></span>
                             : <span
-                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.activity * 100 / ouraData.before.activity) - 100).toFixed(2)}%</b></span>}
+                                style={{color: 'darkred'}}> deteriorated by <b>{Math.abs((ouraData.sober.activity - ouraData.before.activity) / ouraData.before.activity * 100).toFixed(2)}%</b></span>}
                     </p>
                     <p className={styles.ouraScoreSub}>You
                         burned <b>{Math.abs(ouraData.sober.calorie - ouraData.before.calorie).toFixed(0)} calories {ouraData.sober.calorie > ouraData.before.calorie ? "more" : "less"}</b> daily
